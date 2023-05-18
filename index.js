@@ -48,6 +48,23 @@ async function run(){
             res.send(result);
           });
 
+          app.put('/toy', async(req, res)=> {
+            const body = req.body;
+            const options = {upsert: true};
+            const id = body.id;
+            const filter = {_id: new ObjectId(id)};
+            const updateDoc ={
+                $set:{
+                    price: body.price,
+                    quantity: body.quantity,
+                    toyDetails: body.toyDetails
+                }
+            }
+            const result = await trucksCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+
+        })
+
         app.get('/', (req,res) => {
             res.send('Kidstoy is running');
         });
