@@ -32,6 +32,12 @@ async function run(){
                 }
             };
 
+            if(req.query.id){
+                query = {
+                    _id: new ObjectId(req.query.id)
+                }
+            };
+
             const trucks = await trucksCollection.find(query).toArray();
             res.send(trucks);
         });
