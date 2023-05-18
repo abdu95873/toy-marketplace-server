@@ -31,6 +31,11 @@ async function run() {
                     sellerEmail: req.query.email
                 }
             };
+            if (req.query.toyName) {
+                query = {
+                    toyName: req.query.toyName
+                }
+            };
 
             if (req.query.id) {
                 query = {
