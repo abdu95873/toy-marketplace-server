@@ -13,26 +13,26 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
-async function run(){
-    try{
+async function run() {
+    try {
         const trucksCollection = client.db('kidstoy').collection('trucks');
 
-        app.get('/trucks', async (req,res) => {
+        app.get('/trucks', async (req, res) => {
             let query = {};
 
-            if(req.query.subCategory){
+            if (req.query.subCategory) {
                 query = {
                     subCategory: req.query.subCategory
                 }
             };
 
-            if(req.query.email){
+            if (req.query.email) {
                 query = {
                     sellerEmail: req.query.email
                 }
             };
 
-            if(req.query.id){
+            if (req.query.id) {
                 query = {
                     _id: new ObjectId(req.query.id)
                 }
@@ -46,15 +46,15 @@ async function run(){
             const body = req.body;
             const result = await trucksCollection.insertOne(body);
             res.send(result);
-          });
+        });
 
-          app.put('/toy', async(req, res)=> {
+        app.put('/toy', async (req, res) => {
             const body = req.body;
-            const options = {upsert: true};
+            const options = { upsert: true };
             const id = body.id;
-            const filter = {_id: new ObjectId(id)};
-            const updateDoc ={
-                $set:{
+            const filter = { _id: new ObjectId(id) };
+            const updateDoc = {
+                $set: {
                     price: body.price,
                     quantity: body.quantity,
                     toyDetails: body.toyDetails
@@ -65,11 +65,18 @@ async function run(){
 
         })
 
-        app.get('/', (req,res) => {
+        app.delete('/toy/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const toy = await trucksCollection.deleteOne(query);
+            res.send(toy);
+        })
+
+        app.get('/', (req, res) => {
             res.send('Kidstoy is running');
         });
     }
-    finally{
+    finally {
 
     }
 
