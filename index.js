@@ -28,7 +28,13 @@ async function run(){
 
             const trucks = await trucksCollection.find(query).toArray();
             res.send(trucks);
-        })
+        });
+
+        app.post('/toy', async (req, res) => {
+            const body = req.body;
+            const result = await trucksCollection.insertOne(body);
+            res.send(result);
+          });
 
         app.get('/', (req,res) => {
             res.send('Kidstoy is running');
