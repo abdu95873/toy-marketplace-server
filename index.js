@@ -26,6 +26,12 @@ async function run(){
                 }
             };
 
+            if(req.query.email){
+                query = {
+                    sellerEmail: req.query.email
+                }
+            };
+
             const trucks = await trucksCollection.find(query).toArray();
             res.send(trucks);
         });
